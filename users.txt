@@ -1,0 +1,4 @@
+Admin,USER1,Muhammad Kamal,kamal@live.iium,01132123414,password,STF1,ADMIN1
+Student,USER2,Syuib bin Sufyan,syuib@live.iium,01123554565,password,STD1
+Staff,USER3,Luman Abdul Rahman,luqman@live.iium,0193754568,password,STF2
+Staff,USER4,Nisa' Binti Syukur,nisa@live.iium,0148736489,password,STF3
