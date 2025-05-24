@@ -71,6 +71,8 @@ public class FileHandler {
             users.add(user);
                     
         }
+        System.out.println("test");
+        
         return users;
     }
 

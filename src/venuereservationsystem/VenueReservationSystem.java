@@ -9,13 +9,14 @@
 package venuereservationsystem;
 
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 public class VenueReservationSystem {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         FileHandler fileHandler = new FileHandler();
@@ -24,13 +25,10 @@ public class VenueReservationSystem {
         ArrayList<User> users = new ArrayList<>();
         Venue[] venues = new Venue[10];
         ArrayList<Reservation> reservations = new ArrayList<>();
-
-        users.add( new Admin("Muhammad Kamal", "kamal@live.iium", "01132123414", "password"));
-        users.add( new Student("Syuib bin Sufyan", "syuib@live.iium", "01123554565", "password"));
-        users.add( new Staff("Luman Abdul Rahman", "luqman@live.iium", "0193754568", "password"));
-        users.add( new Staff("Nisa' Binti Syukur", "nisa@live.iium", "0148736489", "password"));
-
-        fileHandler.saveUsersToFile(users);
+        
+        users = fileHandler.readUser();
+        System.out.println(users.toString());
+        
         
         venues[0] = new Venue("LR1", "KICT, BLOCK B, LVL3", 35, true);
         venues[1] = new Venue("LR2", "KICT, BLOCK B, LVL3", 35, true);
