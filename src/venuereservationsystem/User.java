@@ -21,6 +21,7 @@ public class User {
     protected String password;
     protected String role;
     protected boolean isLoggedIn;
+    private String id;
     
     public User(String name, String email, String phone, String password, String role) {
         counter++;
@@ -30,6 +31,18 @@ public class User {
         this.phone = phone;
         this.password = password;
         this.role  = role;
+        
+    }
+    
+    public User(String name, String email, String phone, String password, String role, String id) {
+        counter++;
+        this.userID = "USER"+ counter;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.role  = role;
+        this.id = id;
         
     }
     
