@@ -17,11 +17,12 @@ public class User {
     protected String name;
     protected String email;
     protected String phone;
-    protected boolean login = false;
     protected String password;
     protected String role;
-    protected boolean isLoggedIn;
     private String id;
+    protected boolean login = false;
+    protected boolean isLoggedIn;
+    
     
     public User(String name, String email, String phone, String password, String role) {
         counter++;

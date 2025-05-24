@@ -10,32 +10,46 @@ package venuereservationsystem;
 
 
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 public class VenueReservationSystem {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, ParseException {
         Scanner input = new Scanner(System.in);
 
         FileHandler fileHandler = new FileHandler();
         fileHandler.initializeFiles();
 
         ArrayList<User> users = new ArrayList<>();
-        Venue[] venues = new Venue[10];
+        ArrayList<Venue> venues = new ArrayList<>();
         ArrayList<Reservation> reservations = new ArrayList<>();
+        
         
         users = fileHandler.readUser();
         System.out.println(users.toString());
         
+        reservations = fileHandler.readReservation();
+        System.out.println(reservations.toString());
+        // kamal@live.iium
+        //password
+        //2023-12-12
+        //12:22
+        //13:33
+        venues.add(new Venue("LR1", "KICT BLOCK B LVL3", 35, true));
+        venues.add(new Venue("LR2", "KICT BLOCK B LVL3", 35, true));
+        venues.add(new Venue("LR3", "KICT BLOCK B LVL3", 35, true));
+        venues.add(new Venue("LR4", "KICT BLOCK B LVL3", 35, true));
         
-        venues[0] = new Venue("LR1", "KICT, BLOCK B, LVL3", 35, true);
-        venues[1] = new Venue("LR2", "KICT, BLOCK B, LVL3", 35, true);
-        venues[2] = new Venue("LR3", "KICT, BLOCK B, LVL3", 35, true);
-        venues[3] = new Venue("LR4", "KICT, BLOCK B, LVL3", 35, true);
-
+        fileHandler.saveVenueToFile(venues);
+        
+        venues = fileHandler.readVenue();
+        System.out.println(venues.toString());
+        
         User currentUser = loginPage(input, users);
+        
 
         if (currentUser != null && !(currentUser instanceof Admin)) {
             reservePage(input, currentUser, reservations, venues);
@@ -44,6 +58,8 @@ public class VenueReservationSystem {
         }
 
         input.close();
+        reservations = fileHandler.readReservation();
+        System.out.println(reservations.toString());
     }
 
     public static User loginPage(Scanner input, ArrayList<User> users) {
@@ -64,13 +80,14 @@ public class VenueReservationSystem {
         return null;
     }
 
-    public static void reservePage(Scanner input, User user, ArrayList<Reservation> reservations, Venue[] venues) {
+    public static void reservePage(Scanner input, User user, ArrayList<Reservation> reservations, ArrayList<Venue> venues) {
         System.out.println("\n=== RESERVATION PAGE ===");
         System.out.println("Available Venues:");
-
-        for (int i = 0; i < venues.length; i++) {
-            if (venues[i] != null && venues[i].isAvailable()) {
-                System.out.println(i + ". " + venues[i]);
+        int counter = 1;
+        for (Venue venue : venues){
+            if (venue != null && venue.isAvailable()) {
+                System.out.println(counter + ". " + venue);
+                counter++;
             }
         }
 
@@ -78,7 +95,7 @@ public class VenueReservationSystem {
         int venueIndex = input.nextInt();
         input.nextLine(); // Consume newline
 
-        if (venueIndex < 0 || venueIndex >= venues.length || venues[venueIndex] == null || !venues[venueIndex].isAvailable()) {
+        if (venueIndex < 0 || venueIndex >= venues.size() || venues.get(venueIndex) == null || !venues.get(venueIndex).isAvailable()) {
             System.out.println("Invalid venue selected.");
             return;
         }
@@ -98,10 +115,13 @@ public class VenueReservationSystem {
             Date start = dfTime.parse(startStr);
             Date end = dfTime.parse(endStr);
 
-            Reservation r = new Reservation(date, start, end, "Reserved", venues[venueIndex]);
+            Reservation r = new Reservation(date, start, end, "Reserved", venues.get(venueIndex).getVenueID(), user.getUserID() );
             reservations.add(r);
-            venues[venueIndex].updateAvailability(false);
-
+           venues.get(venueIndex).updateAvailability(false);
+            System.out.println(r.toString());
+            FileHandler fileHandler = new FileHandler();
+            
+            fileHandler.saveReservationToFile(reservations,r);
             System.out.println("Reservation successful:\n" + r);
         } catch (Exception e) {
             System.out.println("Invalid input format. Reservation failed.");

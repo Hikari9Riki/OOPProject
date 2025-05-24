@@ -26,6 +26,15 @@ public class Venue {
         this.available = available;
         
     }
+    
+    public Venue(String venueID, String name, String location, int capacity, boolean available) {
+        this.venueID = venueID;
+        this.name = name;
+        this.location = location;
+        this.capacity = capacity;
+        this.available = available;
+        
+    }
 
     public Venue() {
     }
@@ -36,7 +45,11 @@ public class Venue {
     }
 
     public String getVenueID() {
-        return venueID;
+        return this.venueID;
+    }
+
+    public void setVenueID(String venueID) {
+        this.venueID = venueID;
     }
 
     public int getCapacity() {
@@ -73,5 +86,9 @@ public class Venue {
 
     public String getLocation() {
         return location;
+    }
+    
+    public String toDataString() {
+        return venueID + "," + name + "," + location + "," + capacity + "," + available;
     }
 }

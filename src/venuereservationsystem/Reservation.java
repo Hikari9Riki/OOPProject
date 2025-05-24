@@ -4,7 +4,9 @@
  */
 package venuereservationsystem;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 /**
  *
  * @author kanek
@@ -21,23 +23,38 @@ public class Reservation {
     private String status;
     private boolean active;
     private Venue venue;
+    private String venueID;
     private String userID;
     
     
-    public Reservation(Date date, Date startTime, Date endTime, String status, Venue venue) {
+    public Reservation(Date date, Date startTime, Date endTime, String status, String venueID, String userID) {
         counter++;
         this.reservationID = "REV"+counter;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = status;
-        this.venue = venue;
+        this.venueID =  venueID;
+        this.userID = userID;
+       
+    }
+    
+    public Reservation(String id, Date date, Date startTime, Date endTime, String status, Boolean active,String venueID, String userID ) {
+        counter++;
+        this.reservationID = id;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.active = active;
+        this.venueID =  venueID;
+        this.userID = userID;
         
     }
 
     @Override
     public String toString() {
-        return "Reservation{" + "counter=" + counter + ", reservationID=" + reservationID + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime + ", status=" + status + ", active=" + active + ", venue=" + venue + ", userID=" + userID + '}';
+        return "Reservation{" + "counter=" + counter + ", reservationID=" + reservationID + ", date=" + date + ", startTime=" + startTime + ", endTime=" + endTime + ", status=" + status + ", active=" + active + ", venue=" + venueID + ", userID=" + userID + '}';
     }
     
     public String getReservationID() {
@@ -76,10 +93,25 @@ public class Reservation {
         reserve.active = false;
         reserve.status = "cancel";
     }
+    
+    public void declineReservation(Reservation reserve) {
+        reserve.active = false;
+        reserve.status = "decline";
+    }
+    
+    public void approveReservation(Reservation reserve) {
+        reserve.active = false;
+        reserve.status = "approve";
+    }
 
     public boolean checkAvailability() {
         // Implementation
         return true;
     }
-
+    
+    public String toDataString() {
+        SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dfTime = new SimpleDateFormat("HH:mm");
+        return reservationID + "," + dfDate.format(date) + "," + dfTime.format(startTime) + "," + dfTime.format(endTime) + "," + status + "," + Boolean.toString(active) + "," + venueID + "," + userID;
+    }
 }
